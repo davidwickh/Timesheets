@@ -1,0 +1,23 @@
+{% if all_fields %}
+    <form action="/employees/add_employee/" method="POST">
+        {% csrf_token %}
+        {% for field in all_fields %}
+                <label for="{{ field.name }}">{{ field.name }}</label>
+                <input type="text" name="{{ field.name }}" id="{{ field.name }}">
+                <br>
+        {% endfor %}
+        {%  for column_name, foreign_key_values in foreign_key_fields.items %}
+            {# foreign key fiel is a dict. the key is the column name, and the value is a list of values to add to a dropdown menu #}
+            <label for="{{ column_name }}">{{ column_name }}</label>
+            <select name="{{ column_name }}" id="{{ column_name }}">
+                {% for answer in foreign_key_values %}
+                    <option value="{{ answer.id }}">{{ answer.id }}</option>
+                {% endfor %}
+            </select>
+            <br>
+        {% endfor %}
+        <input type="submit" value="Add Employee">
+    </form>
+{% else %}
+    <h1>There are no fields in the Employees database table</h1>
+{% endif %}
