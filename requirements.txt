@@ -1,1 +1,5 @@
+# Dev
+pre-commit~=3.8.0
+
+# All other
 Django~=5.0.6
