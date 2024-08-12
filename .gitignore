@@ -1,0 +1,17 @@
+# Virtual Environment
+*/.venv/
+*/venv/
+
+# IDE
+*.idea/
+*.vscode/
+
+# Django
+*/migrations/
+*.pyc
+*.pyo
+*.pyd
+db.sqlite3
+media/
+
+

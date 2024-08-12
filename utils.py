@@ -10,5 +10,3 @@ class DataFormatter:
     def __init__(self):
         self.ui_date_format = "%d/%m/%Y"
         self.database_date_format = "%Y-%m-%d"
-
-    def from_ui_to_database(self, data: Model._meta.fields):
