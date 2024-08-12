@@ -1,0 +1,19 @@
+{# single_employee_data should be data received from Employee table #}
+{% if single_employee_data %}
+    <table>
+        <tr>
+            <th>Field Name</th>
+            <th>Field Value</th>
+        </tr>
+
+        {% for employee_field, employee_value in single_employee_data.items %}
+        <tr>
+                <td>{{ employee_field }}</td>
+                <td>{{ employee_value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% else %}
+    <p>No employee available. Either the employee ID provided is incorrect, or there was an issue connecting
+    to the database.</p>
+{% endif %}

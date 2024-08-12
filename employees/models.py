@@ -20,7 +20,7 @@ class Employee(models.Model):
     def save(self, *args, **kwargs):
         """Override the save method to generate the id if it does not exist."""
         if not self.id:
-            self.id = f"{self.first_name.lower()}_{self.last_name.lower()}"
+            self.id = f"{str(self.first_name).lower()}_{str(self.last_name).lower()}"
             # if the id already exists, add a random number to the end
             if Employee.objects.filter(id=self.id).exists():
                 self.id = f"{self.id}_{randint(1, 100)}"

@@ -11,7 +11,14 @@ class Project(models.Model):
     # Employee is in the employees app
     project_manager = models.ForeignKey("employees.Employee", on_delete=models.CASCADE)
     # project_team = models.ManyToManyField("employees.Employee")
-    status = models.CharField(max_length=100)
+    status = models.CharField(
+        max_length=100,
+        choices=[
+            ("Bid", "Bid"),
+            ("In Progress", "In Progress"),
+            ("Complete", "Complete"),
+        ]
+    )
     total_budget = models.DecimalField(max_digits=10, decimal_places=2)
     remaining_budget = models.DecimalField(max_digits=10, decimal_places=2)
     budget_spent = models.DecimalField(max_digits=10, decimal_places=2)

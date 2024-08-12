@@ -2,9 +2,22 @@
     <form action="/projects/add_project/" method="POST">
         {% csrf_token %}
         {% for field in all_fields %}
+{#            If a field has a choices value, then create a dropdown list of those choices#}
+            {% if field.choices %}
+                <label for="{{ field.name }}">{{ field.name }}</label>
+                <select name="{{ field.name }}" id="{{ field.name }}">
+                    {% for choice in field.choices %}
+                        <option value="{{ choice }}">{{ choice }}</option>
+                    {% endfor %}
+            {% elif not field.choices %}
                 <label for="{{ field.name }}">{{ field.name }}</label>
                 <input type="text" name="{{ field.name }}" id="{{ field.name }}">
+                {# If the field has a .help_text, then add text to the right of the input #}
+                {% if field.help_text %}
+                    {{ field.help_text }}
+                {% endif %}
                 <br>
+            {% endif %}
         {% endfor %}
         {%  for column_name, foreign_key_values in foreign_key_fields.items %}
             {# foreign key fiel is a dict. the key is the column name, and the value is a list of values to add to a dropdown menu #}

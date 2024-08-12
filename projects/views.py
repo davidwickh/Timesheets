@@ -5,6 +5,7 @@ from django.template import loader
 
 from .models import Project
 from employees.models import Employee
+from datetime import datetime
 
 
 def detail(request, project_id):
@@ -30,6 +31,8 @@ def add_project(request):
         all_project_fields = []
         for field in Project._meta.fields:
             if not field.primary_key and not field.is_relation:
+                if field.name == "start_date" or field.name == "end_date":
+                    field.help_text = "Enter the start date in the format DD/MM/YYYY"
                 all_project_fields.append(field)
         all_foreign_keys = [field for field in Project._meta.fields if field.is_relation]
         # Convert foreign keys to a dictionary of key-value pairs with the key being the field name and the value being
@@ -68,6 +71,14 @@ def add_project(request):
                 related_object = related_model.objects.get(id=foreign_key_value)
             except KeyError:
                 continue
+
+        # Convert the start_date and end_date to a datetime object
+        try:
+            project_data["start_date"] = datetime.strptime(project_data["start_date"], "%d/%m/%Y")
+            project_data["end_date"] = datetime.strptime(project_data["end_date"], "%d/%m/%Y")
+        except ValueError:
+            return HttpResponse("Invalid date format. Please enter the date in the format DD/MM/YYYY")
+
         # Create a new project
         new_project = Project(**project_data)
         # Save the project to the database

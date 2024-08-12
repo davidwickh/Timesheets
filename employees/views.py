@@ -1,15 +1,11 @@
 from django.http import HttpResponse
 from django.template import loader
+from django.forms.models import model_to_dict
 
 from .models import Employee
 
 
 # Create your views here.
-
-def detail(request, employee_id):
-    """Returns all details of an employee."""
-    return HttpResponse(f"You're looking at employee {employee_id}")
-
 
 def index(request):
     """Returns all employees."""
@@ -25,8 +21,6 @@ def add_employee(request):
     """
     Add employee view. If GET request, render the form to add a new employee. If POST request, create a new employee
     by adding to the database.
-    :param request:
-    :return:
     """
     if request.method == "GET":
         # Get all the fields from the Employee model
@@ -57,6 +51,13 @@ def add_employee(request):
         return HttpResponse("Employee added successfully. <a href='/employees/'>Go back to the employees page</a>")
 
 
-def projects(request, employee_id):
-    """Returns all projects that employee is currently working on."""
-    return HttpResponse("You're looking at all projects.")
+def detail(request, employee_id: str):
+    """Returns all details of an employee from the employees.Models."""
+    # Extract all the data from the employee model with the given employee_id
+    employee = model_to_dict(Employee.objects.get(id=employee_id))
+    for field, value in employee.items():
+        print(f"field name: {field}")
+        print(f"field value: {value}")
+    template = loader.get_template("employees/detail.html")
+    context = {"single_employee_data": employee}
+    return HttpResponse(template.render(context, request))
