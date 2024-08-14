@@ -1,22 +1,29 @@
-{% if all_employees %}
-{#    Create a table#}
-    <table>
+{% extends 'employees/base.html' %}
+{% load static %}
+
+{% block title %}Employee List{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Team</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for employee in employees %}
         <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-        </tr>
-    {% for employee in all_employees %}
-        <tr>
-{#        Also make the employee ID take you to the specific employee page #}
-            <td><a href="/employees/{{ employee.id }}/">{{ employee.id }}</a></td>
+            <td><a href="/employees/{{ employee.id }}/detail/">{{ employee.id }}</a></td>
             <td>{{ employee.first_name }}</td>
             <td>{{ employee.last_name }}</td>
             <td>{{ employee.email }}</td>
+            <td>{{ employee.team }}</td>
         </tr>
     {% endfor %}
-    </table>
-{% else %}
-    <p>No employees are available.</p>
-{% endif %}
+    </tbody>
+</table>
+{% endblock %}

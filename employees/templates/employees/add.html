@@ -1,0 +1,16 @@
+{% extends 'employees/base.html' %}
+{% load static %}
+
+{% block title %}Employee List{% endblock %}
+
+{% block content %}
+<h1>Create New Employee</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- Render the form fields -->
+    <button type="submit">Create Employee</button>
+</form>
+
+<a href="index.html">Back to Employee List</a>
+{% endblock %}
