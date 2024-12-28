@@ -48,7 +48,8 @@ def add_employee(request):
         # Save the employee to the database
         new_employee.save()
         # Redirect to the index page
-        return HttpResponse("Employee added successfully. <a href='/employees/'>Go back to the employees page</a>")
+        template = loader.get_template("employees/add_employee_post.html")
+        return HttpResponse(template.render({}, request))
 
 
 def detail(request, employee_id: str):

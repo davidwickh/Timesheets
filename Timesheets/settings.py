@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'employees.apps.EmployeesConfig',
-    "projects.apps.ProjectsConfig",
-    "forecast.apps.ForecastConfig"
+    'projects.apps.ProjectsConfig',
+    'forecast.apps.ForecastConfig',
 ]
 
 MIDDLEWARE = [
@@ -57,8 +57,7 @@ ROOT_URLCONF = 'Timesheets.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

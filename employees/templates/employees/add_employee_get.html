@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 {% if all_fields %}
     <form action="/employees/add_employee/" method="POST">
         {% csrf_token %}
@@ -21,3 +25,5 @@
 {% else %}
     <h1>There are no fields in the Employees database table</h1>
 {% endif %}
+
+{% endblock %}

@@ -1,4 +1,8 @@
-{# single_employee_data should be data received from Employee table #}
+{% extends 'base.html' %}
+
+{% block title %}Employee Details{% endblock %}
+
+{% block content %}
 {% if single_employee_data %}
     <table>
         <tr>
@@ -17,3 +21,4 @@
     <p>No employee available. Either the employee ID provided is incorrect, or there was an issue connecting
     to the database.</p>
 {% endif %}
+{% endblock %}
