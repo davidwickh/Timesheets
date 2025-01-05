@@ -3,6 +3,7 @@
 from django.http import HttpResponse
 from django.template import loader
 
+from Timesheets.utils import get_model_values_and_foreign_key_values
 from .models import Project
 from employees.models import Employee
 from datetime import datetime
@@ -27,27 +28,8 @@ def add_project(request):
     """Two methods, GET and POST. If GET request, render the form to add a new project. If POST request, create a new
     project by adding to the database."""
     if request.method == "GET":
-        # Get all fields that are not foreign keys and primary keys
-        all_project_fields = []
-        for field in Project._meta.fields:
-            if not field.primary_key and not field.is_relation:
-                if field.name == "start_date" or field.name == "end_date":
-                    field.help_text = "Enter the start date in the format DD/MM/YYYY"
-                all_project_fields.append(field)
-        all_foreign_keys = [field for field in Project._meta.fields if field.is_relation]
-        # Convert foreign keys to a dictionary of key-value pairs with the key being the field name and the value being
-        # the values from the foreign key table
-        foreign_keys_dict = {}
-        for fk in all_foreign_keys:
-            fk_name = fk.name
-            fk_values = fk.related_model.objects.all()
-            foreign_keys_dict[fk_name] = [fk_value for fk_value in fk_values]
-
+        context = get_model_values_and_foreign_key_values(Project)
         template = loader.get_template("projects/add_project_get.html")
-        context = {
-            "all_fields": all_project_fields,
-            "foreign_key_fields": foreign_keys_dict,
-        }
         return HttpResponse(template.render(context, request))
     elif request.method == "POST":
         # Extract the form data

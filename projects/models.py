@@ -6,8 +6,12 @@ class Project(models.Model):
     id = models.AutoField(primary_key=True)
     project_name = models.CharField(max_length=100)
     project_description = models.TextField()
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(
+        help_text="Enter the start date in the format DD/MM/YYYY",
+    )
+    end_date = models.DateField(
+        help_text="Enter the end date in the format DD/MM/YYYY",
+    )
     # Employee is in the employees app
     project_manager = models.ForeignKey("employees.Employee", on_delete=models.CASCADE)
     # project_team = models.ManyToManyField("employees.Employee")
@@ -25,7 +29,6 @@ class Project(models.Model):
 
     def __str__(self):
         return self.project_name
-
 
 # class ProjectTeam(models.Model):
 #     """A project team model is made up of multiple employees with specific roles and bill rates."""
