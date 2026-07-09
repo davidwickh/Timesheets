@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.forms.models import model_to_dict
 
+from .forms import EmployeeForm
 from .models import Employee
 
 
@@ -23,42 +24,27 @@ def add_employee(request):
     by adding to the database.
     """
     if request.method == "GET":
-        # Get all the fields from the Employee model
-        all_fields = Employee._meta.fields
-        all_fields = all_fields[1:]
-        # Render the form
+        form = EmployeeForm()
         template = loader.get_template("employees/add_employee_get.html")
-        context = {
-            "foreign_key_fields": {},  # No foreign keys in the Employee model
-            "all_fields": all_fields,
-        }
+        context = {"form": form}
         return HttpResponse(template.render(context, request))
 
     elif request.method == "POST":
-        # Get the form data
-        employee_fields = [field.name for field in Employee._meta.fields]
-        form_data = {}
-        for field in employee_fields:
-            try:
-                form_data[field] = request.POST[field]
-            except KeyError:
-                continue
-        # Create a new employee
-        new_employee = Employee(**form_data)
-        # Save the employee to the database
-        new_employee.save()
-        # Redirect to the index page
-        template = loader.get_template("employees/add_employee_post.html")
-        return HttpResponse(template.render({}, request))
+        form = EmployeeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            template = loader.get_template("employees/add_employee_post.html")
+            return HttpResponse(template.render({}, request))
+        else:
+            template = loader.get_template("employees/add_employee_get.html")
+            context = {"form": form}
+            return HttpResponse(template.render(context, request))
 
 
 def detail(request, employee_id: str):
     """Returns all details of an employee from the employees.Models."""
     # Extract all the data from the employee model with the given employee_id
     employee = model_to_dict(Employee.objects.get(id=employee_id))
-    for field, value in employee.items():
-        print(f"field name: {field}")
-        print(f"field value: {value}")
     template = loader.get_template("employees/detail.html")
     context = {"single_employee_data": employee}
     return HttpResponse(template.render(context, request))
